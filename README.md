@@ -4,16 +4,56 @@ Hakoot is a Django web application for creating and playing quizzes. Users can c
 
 ## Table of Contents
 - [Video Demo](#video-demo)
-- [Distinctiveness and Complexity](#distinctiveness-and-complexity)
 - [Installation](#installation)
 - [Usage](#usage)
 - [File Structure](#file-structure)
+- [Distinctiveness and Complexity](#distinctiveness-and-complexity)
+
 
 ## Video Demo
 [Click to play](https://www.youtube.com/watch?v=61no9QvlWX8)
 
-## Distinctiveness and Complexity
 
+## Installation
+1. Clone the repository
+   ```bash
+   git clone https://github.com/whyk47/Hakoot.git
+   ```
+2. Start the development server with the following batch command.
+   ```bash
+   ./run
+   ```
+3. You should get the following output.
+   ```bash
+      $ python manage.py runserver
+      Watching for file changes with StatReloader
+      Performing system checks...
+
+      System check identified no issues (0 silenced).
+      November 06, 2024 - 20:03:07
+      Django version 5.0.4, using settings 'hakoot.settings'
+      Starting development server at http://127.0.0.1:8000/
+      Quit the server with CTRL-BREAK.
+   ```
+Follow the link to the development server to access the application.
+
+## Usage
+1. Register for a new account or log in if you already have one.
+2. Create a new quiz by navigating to the "Create Quiz" section.
+3. Edit or delete quizzes by clicking any quiz from the "My Quizzes" section.
+4. Play quizzes made by other users and view your scores on the leaderboard.
+5. Log out when you are done.
+
+## File Structure
+- `views.py`: Contains the Django views for handling various functionalities such as rendering pages, creating, editing, and deleting quizzes, and playing quizzes.
+- `util.py`: Contains utility functions used in the application, such as pagination.
+- `models.py`: Defines the database models for User, Quiz, Question, Option, Quiz_attempt, and Question_attempt.
+- `urls.py`: Configures the URL patterns for the application.
+- `forms.py`: Contains Django forms for Quiz, Question, and Option.
+- `templates/`: Contains HTML templates for rendering different pages.
+- `static/`: Contains static files such as CSS and JavaScript.
+
+## Distinctiveness and Complexity
 1. **Dynamic Question Addition/Removal:**
    - The project allows dynamic addition and removal of quiz questions on the create and edit quiz page. This is achieved through client-side JavaScript (`create.js`), enhancing the user experience by enabling them to modify the quiz structure interactively.
 
@@ -28,53 +68,3 @@ Hakoot is a Django web application for creating and playing quizzes. Users can c
 
 4. **Aesthetics:**
     - The project makes use of many different bootstrap elements (eg. cards, list-groups, buttons) to achieve a sleek and aesthetically pleasing design. In particular, there is apt use of margins to space DOM elements appropriately.
-
-## Installation
-
-1. Clone the repository
-
-2. Navigate to the project directory:
-   ```bash
-   cd hakoot
-   ```
-
-3. Make database migrations:
-   ```bash
-   python manage.py makemigrations
-   ```
-   
-5. Apply database migrations:
-   ```bash
-   python manage.py migrate
-   ```
-
-6. Create a superuser account for administration:
-   ```bash
-   python manage.py createsuperuser
-   ```
-
-7. Start the development server:
-   ```bash
-   python manage.py runserver
-   ```
-
-8. Open your web browser and go to [http://127.0.0.1:8000/](http://127.0.0.1:8000/) to access the application.
-
-## Usage
-
-1. Register for a new account or log in if you already have one.
-2. Create a new quiz by navigating to the "Create Quiz" section.
-3. Edit or delete quizzes by clicking any quiz from the "My Quizzes" section.
-4. Play quizzes made by other users and view your scores on the leaderboard.
-5. Log out when you are done.
-
-## File Structure
-
-- `views.py`: Contains the Django views for handling various functionalities such as rendering pages, creating, editing, and deleting quizzes, and playing quizzes.
-- `util.py`: Contains utility functions used in the application, such as pagination.
-- `models.py`: Defines the database models for User, Quiz, Question, Option, Quiz_attempt, and Question_attempt.
-- `urls.py`: Configures the URL patterns for the application.
-- `forms.py`: Contains Django forms for Quiz, Question, and Option.
-- `templates/`: Contains HTML templates for rendering different pages.
-- `static/`: Contains static files such as CSS and JavaScript.
-
