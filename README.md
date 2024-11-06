@@ -17,11 +17,11 @@ Hakoot is a Django web application for creating and playing quizzes. Users can c
 ## Installation
 1. Clone the repository
    ```bash
-   git clone https://github.com/whyk47/Hakoot.git
+   $ git clone https://github.com/whyk47/Hakoot.git
    ```
 2. Start the development server with the following batch command.
    ```bash
-   ./run
+   $ ./run
    ```
 3. You should get the following output.
    ```bash
