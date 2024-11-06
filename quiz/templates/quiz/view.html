@@ -1,0 +1,54 @@
+{% extends "quiz/layout.html" %}
+{% load static %}
+
+{% block body %}
+    <div class="card m-3">
+        <h1 class="card-header">{{ quiz.name }}</h1>
+        <div class="card-body">
+            <a href="{% url 'quiz:profile' quiz.creator %}">
+                <h5 class="card-title text-dark">{{ quiz.creator }}</h5>   
+            </a>
+            <h6 class="card-text">{{ quiz.num_questions }} Questions</h6>
+            <p class="card-text">{{ quiz.desc }}</p>
+            {% if user.is_authenticated and quiz_attempt is None %}
+                <a href="{% url 'quiz:play' quiz.id %}"><button class="btn btn-success">Play!</button></a>
+            {% elif user.is_authenticated %}
+                <button class="btn btn-success" disabled>Already Attempted</button>
+            {% else %}
+                <button class="btn btn-success" disabled>Login to Play</button>
+            {% endif %}
+        </div>    
+        <div class="card-footer text-muted">{{ quiz.timestamp }}</div>        
+    </div>
+    <div class="card m-3" id="leaderboard">
+        <div class="card-header row justify-content-center">
+            <h3 class="card-title">Leaderboard</h3>
+        </div>
+        <ul class="list-group list-group-flush">
+            {% for quiz_attempt in leaderboard %}
+                {% if quiz_attempt.user == user %}
+                    <li class="list-group-item list-group-item-success">
+                {% else %}
+                    <li class="list-group-item">
+                {% endif %}
+                        <div class="row">
+                            <div class="col-1">{{ forloop.counter }}</div>
+                            <div class="col-9 username">{{ quiz_attempt.user.username }}</div>
+                            <div class="col-2 score">{{ quiz_attempt.score }}</div>
+                        </div>
+                    </li>
+            {% empty %}
+                <li class="list-group-item">No attempts yet</li>
+            {% endfor %}    
+            {% if quiz_attempt not in leaderboard and quiz_attempt is not None %}
+                <li class="list-group-item list-group-item-success">
+                    <div class="row">
+                        <div class="col-1"></div>
+                        <div class="col-9 username">{{ quiz_attempt.user.username }}</div>
+                        <div class="col-2 score">{{ quiz_attempt.score }}</div>
+                    </div>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+{% endblock %}

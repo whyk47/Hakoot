@@ -1,0 +1,70 @@
+{% extends "quiz/layout.html" %}
+{% load static %}
+
+{% block body %}
+    <div id="quiz_info" data-csrf_token="{{ csrf_token }}" data-quiz_id="{{ quiz.id }}" data-curr_qn="{{ quiz_attempt.current_question }}" data-num_qns="{{ quiz.num_questions }}" data-time_left="{{ quiz_attempt.time_left }}"></div>
+    <div class="d-flex m-3">
+        <h1 id="title">{{ quiz.name }}</h1>
+        <button id="curr_qn" class="ml-auto btn btn-dark">{{ quiz_attempt.current_question|add:1 }}/{{ quiz.num_questions }}</button>
+    </div>
+    {% for qn in qns %}
+        <div id="qn_{{ qn.qn_no }}" data-time_limit="{{ qn.time_limit }}" class="card m-3 qn" style="display: none;">
+            <h2 class="card-header">{{ qn.question }}</h2>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <div class="timer">
+                        <div class="row justify-content-center">
+                            <h3 class="card-text row time_left mb-3"></h3>
+                        </div>
+                        <div class="progress mx-auto mb-2" style="max-width: 300px;">
+                            <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div> 
+                        <div class="row justify-content-center text-secondary">
+                            <div>500p</div>
+                            <div style="width: 270px;"></div>
+                            <div>1000p</div>
+                        </div>
+                    </div>
+                    <div class="results row justify-content-center" style="display: none;">
+                        <h1 class="symbol card-text text-light text-center rounded-circle mb-2" style="height: 50px; width: 50px;"></h1>
+                        <div class="w-100"></div>
+                        <h3 class="result card-text mb-2"></h3>
+                        <div class="w-100"></div>
+                        <h5 class="score card-text mb-2"></h5>        
+                    </div>
+                </li>
+                <li class="list-group-item">
+                    <div class="row">
+                        {% for option in options %}
+                            {% if option.qn_no == qn.qn_no %}
+                                <button class="btn m-1 col option" type="button" data-option_no="{{ option.option_no }}" data-qn_no="{{ option.qn_no }}" style="color: white;">
+                                    <strong>{{ option.option }}</strong>
+                                </button>
+                                {% if forloop.counter|divisibleby:2 %}
+                                    <div class="w-100"></div>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}        
+                    </div>
+                </li>
+            </ul>
+        </div>
+    {% endfor %}
+
+    <div class="card m-3" id="leaderboard" style="display: none;">
+        <div class="card-header row justify-content-center">
+            <h3 class="card-title">Leaderboard</h3>
+        </div>
+        <ul class="list-group list-group-flush"></ul>
+    </div>
+
+    <button id="next" class="btn btn-primary mx-3" type="button" style="display: none;">Next</button>
+    <a id="finish" href="{% url 'quiz:view' quiz.id %}" style="display: none;">
+        <button class="btn btn-success mx-3" type="button">Finish</button>
+    </a>
+
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'quiz/play.js' %}"></script>
+{% endblock %}

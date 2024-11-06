@@ -1,0 +1,52 @@
+{% extends "quiz/layout.html" %}
+{% load static %}
+
+{% block body %}
+    <h2 class="m-3">{{ page_title }}</h2>
+    {% if page_title != "Search Results" %}
+        <div class="d-flex">
+            <form method="post" class="form-inline mx-3 justify-content-left" action="{% url 'quiz:index' %}">
+                {% csrf_token %}
+                <input class="form-control mr-2" type="search" name="query" placeholder="Search Quizzes" required>
+                <button class="btn btn-success" type="submit">Search</button>
+            </form>    
+        </div>
+    {% endif %}
+
+    {% for quiz in page %}
+        <div class="card m-3">
+            <div class="card-body">
+                {% if quiz.creator == user %}
+                    {% url 'quiz:edit' quiz.id as url %}
+                {% else %}
+                    {% url 'quiz:view' quiz.id as url %}
+                {% endif %}
+                <a href="{{ url }}">
+                    <h3 class="card-title text-dark">{{ quiz.name }}</h3>
+                </a>
+                <div class="card-text">
+                    <div>{{ quiz.num_questions }} questions</div>
+                    <a href="{% url 'quiz:profile' quiz.creator %}">
+                        <div class="text-muted">{{ quiz.creator }}</div>
+                    </a>    
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <h3 class="m-3">No quizzes found.</h3>
+    {% endfor %}
+    <!-- pagination -->
+    <p class="text-muted d-flex justify-content-center mt-3">Page {{ page.number }} of {{ page.paginator.num_pages }}</p>
+    <div class="d-flex justify-content-center">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                {% if page.has_previous %}
+                    <li class="page-item"><a class="page-link" href="?page={{ page.previous_page_number }}">Previous</a></li>
+                {% endif %}
+                {% if page.has_next %}
+                    <li class="page-item"><a class="page-link" href="?page={{ page.next_page_number }}">Next</a></li>
+                {% endif %}
+            </ul>
+        </nav>    
+    </div>
+{% endblock %}

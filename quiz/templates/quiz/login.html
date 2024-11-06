@@ -1,0 +1,24 @@
+{% extends "quiz/layout.html" %}
+
+{% block body %}
+
+    <h2 class="m-3">Login</h2>
+
+    {% if message %}
+        <div class="mx-3 text-danger">{{ message }}</div>
+    {% endif %}
+
+    <form action="{% url 'quiz:login' %}" method="post" class="m-3">
+        {% csrf_token %}
+        <div class="form-group">
+            <input autofocus class="form-control" type="text" name="username" placeholder="Username">
+            <input class="form-control mt-1 mb-3" type="password" name="password" placeholder="Password">
+            <input class="btn btn-primary" type="submit" value="Login">
+        </div>
+    </form>
+
+    <div class="m-3">
+        Don't have an account? <a href="{% url 'quiz:register' %}">Register here.</a>
+    </div>
+
+{% endblock %}

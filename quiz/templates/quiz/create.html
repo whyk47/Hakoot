@@ -1,0 +1,75 @@
+{% extends "quiz/layout.html" %}
+{% load static %}
+
+{% block body %}
+    <h2 class="mt-3 ml-3">{{ page_title }}</h2>
+    {% if page_title == "Edit Quiz" %}
+        {% url 'quiz:edit' as url %}
+    {% else %}
+        {% url 'quiz:create' as url %}
+    {% endif %}
+    <form id="form" action="{{ url }}" method="post" class="ml-4 mb-3">
+        <div id="csrf_token" style="display: none;">{{ csrf_token }}</div>
+        {% csrf_token %}
+        <!-- quiz title -->
+        <div class="form-group">
+            {{ quiz_form.as_p }}
+            <hr class="mt-3 mb-3">
+        </div>
+        
+        <div id="questions">
+            {{ qn_forms.management_form }}
+            {{ option_forms.management_form }}
+            <!-- load questions -->
+            {% for qn_form in qn_forms %}
+                <div class="form-group qn">
+                    <h3 class="font-weight-bold qn_no">Question {{ forloop.counter }}:</h3>
+                    <div class="qn_form">{{ qn_form.as_div }}</div>
+                    <!-- load options -->
+                    <h5>Options:</h5>
+                    <ol>
+                        {% for option_form in option_forms %}
+                            {% if option_form.qn_no.value == qn_form.qn_no.value %}
+                                <li class="option mt-1">
+                                    {{ option_form.as_div }}
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                    </ol>
+                    <button class="remove_qn btn btn-danger mt-2" type="button">Remove Question</button>
+                    <hr class="mt-3 mb-3">
+                </div>
+            {% endfor %}
+        </div>
+        <button id="add_question" type="button" class="btn btn-primary">Add Question</button>
+        <button id="submit" type="submit" class="btn btn-success">Save Quiz</button>
+    </form>
+    {% if page_title == "Edit Quiz" %}
+        <form id="del_quiz" action="{% url 'quiz:delete' quiz_id %}" method="post">
+            {% csrf_token %}
+            <button id="del" type="submit" class="btn btn-danger ml-4 mb-3">Delete Quiz</button>
+        </form>
+    {% endif %}
+
+
+    <!-- template for new question -->
+    <div id="new_qn" class="form-group qn" style="display: none;">
+        <h3 class="font-weight-bold qn_no"></h3>
+        <div class="qn_form">{{ qn_forms.empty_form.as_div }}</div>
+        <h5>Options:</h5>
+        <ol>
+            {% for i in '1234'|make_list %}
+                <li class="option mt-1">
+                    {{ option_forms.empty_form.as_div }}
+                </li>
+            {% endfor %}
+        </ol>
+        <button class="remove_qn btn btn-danger mt-2" type="button">Remove Question</button>
+        <hr class="mt-3 mb-3">
+    </div>   
+
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'quiz/create.js' %}"></script>
+{% endblock %}
